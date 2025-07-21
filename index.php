@@ -69,10 +69,11 @@
     </style>
 </head>
 <body>
-    <div class="header-container">
+    <div class="header-container"></div>
 
-    </div>
-
+    <?php
+        $specialChars = [' ', 'ß', 'ä', 'ö', 'ü'];
+    ?>    
     
     <div class="card">
         <form>
@@ -83,8 +84,13 @@
                 if (isset($_GET['encrypt'])) {
                     $text = strtolower($_GET['encrypt']);
                     $array = str_split($text);
+                    echo '<b>Dein Wort lautet: </b>';
                     foreach ($array as $char) {
-                        echo toNum($char);
+                        if (in_array($char, $specialChars)) {
+                            echo $char;  
+                        } else {
+                        echo toChar(toNum($char) + 1);
+                        }
                     }
                 }
             ?>
@@ -94,6 +100,17 @@
         <form>
             <h2>Text entschlüsseln</h2>
             <input name="decrypt" placeholder="Hier Text eingeben...">
+
+            <?php
+                if (isset($_GET['decrypt'])) {
+                    $text = strtolower($_GET['decrypt']);
+                    $array = str_split($text);
+                    echo '<b>Dein entschlüsseltes Wort lautet: </b>';
+                    foreach ($array as $char) {
+                        echo toChar(toNum($char) - 1);
+                    }
+                }
+            ?>
             <button type="submit">ENTSCHLÜSSELN</button>
         </form>
     </div>
@@ -118,6 +135,26 @@ function toNum($data) {
             ($alpha_flip[$data[$i]] + 1) * pow(26, ($length - $i - 1));
     }
     return $return_value;
+}
+
+function toChar($number) {
+
+    if ($number < 0) {
+        $number = $number + 26;
+    }
+
+    if ($number > 25) {
+        $number = $number - 26;
+    }
+
+    $alphabet = array( 'a', 'b', 'c', 'd', 'e',
+                       'f', 'g', 'h', 'i', 'j',
+                       'k', 'l', 'm', 'n', 'o',
+                       'p', 'q', 'r', 's', 't',
+                       'u', 'v', 'w', 'x', 'y',
+                       'z'
+                       );
+   return $alphabet[$number];
 }
 
 ?>
