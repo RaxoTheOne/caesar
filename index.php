@@ -102,14 +102,23 @@
             <input name="decrypt" placeholder="Hier Text eingeben...">
 
             <?php
+                // Checken ob das Eingabefeld 'decrypt' gesetzt ist
+                // und den Text entschlüsseln
+                // und das Ergebnis ausgeben
+                // Wenn das Eingabefeld leer ist, wird nichts ausgegeben
+                // Wenn das Eingabefeld nicht leer ist, wird der Text entschlüsselt
                 if (isset($_GET['decrypt'])) {
                     $text = strtolower($_GET['decrypt']);
                     $array = str_split($text);
                     echo '<b>Dein entschlüsseltes Wort lautet: </b>';
                     foreach ($array as $char) {
+                        if (in_array($char, $specialChars)) {
+                            echo $char;  
+                        } else {
                         echo toChar(toNum($char) - 1);
-                    }
+                    }   
                 }
+            }
             ?>
             <button type="submit">ENTSCHLÜSSELN</button>
         </form>
